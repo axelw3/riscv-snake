@@ -2,6 +2,8 @@
 #include "accele.h"
 #include "dtekv-lib.h"
 
+extern void display_2_dig_short(short num, short pos);
+
 void handle_interrupt(unsigned cause) 
 {}
 
