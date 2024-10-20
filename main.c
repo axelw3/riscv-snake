@@ -21,7 +21,7 @@ int main() {
     while(1) {
         volatile short* accelePointer = (short*) 0x32;
         //display_2_dig_short((short) 0, (short) ((*accelePointer & 0b11111111) % 100));
-        display_2_dig_short(7, 0);
+        display_2_dig_short(99, 0);
         set_leds(1);
     }
     return 0;
