@@ -1,8 +1,8 @@
 #include <stdio.h>
-//#include "accele.h"
+#include "accele.h"
 #include "dtekv_lib.h"
 
-#include "accele.c"
+//#include "accele.c"
 
 void handle_interrupt(unsigned cause) 
 {}
