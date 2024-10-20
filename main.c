@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "accele.h"
-#include "dtekv-lib.h"
+#include "dtekv_lib.h"
 
 extern void display_2_dig_short(short num, short pos);
 
