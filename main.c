@@ -4,6 +4,6 @@
 int main() {
     while(1) {
         volatile short* accelePointer = (short*) 0x32;
-        printf("%h", (*accelePointer & 0b11111111) % 100);
+        display_2_dig_short(0, (*accelePointer & 0b11111111) % 100);
     }
 };
