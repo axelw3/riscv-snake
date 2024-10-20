@@ -53,6 +53,6 @@ void display_2_dig_short(short num, short pos) {
     short second_num = num / 10;
     short display_num = pos * 2;
 
-    set_displays((int) pos, (int) first_num);
-    set_displays((int) pos + 1, (int) second_num);
+    set_displays((int) display_num, (int) first_num);
+    set_displays((int) display_num + 1, (int) second_num);
 }
