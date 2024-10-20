@@ -58,10 +58,3 @@ void display_2_dig_short(short num, short pos) {
     set_displays((int) pos, (int) first_num);
     set_displays((int) pos + 1, (int) second_num);
 }
-
-int main() {
-    while(1) {
-        volatile short* accelePointer = (short*) 0x32;
-        printf("%h", (*accelePointer & 0b11111111) % 100);
-    }
-};
