@@ -1,4 +1,4 @@
-// accele.h. Replace guard clause with '#pragma once' ?
+//Guard
 #ifndef DTEKV_LIb_H
 #define DTEKV_LIb_H
 

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "accele.h"
 #include "dtekv-lib.h"
 
 void handle_interrupt(unsigned cause) 
