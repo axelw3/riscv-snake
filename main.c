@@ -20,7 +20,7 @@ int get_sw( void ){
 int main() {
     while(1) {
         volatile short* accelePointer = (short*) 0x32;
-        display_2_dig_short((short) 0, (short) ((*accelePointer & 0b11111111)));
+        display_2_dig_short(0, ((*accelePointer & 0b11111111)));
         set_leds(1);
     }
     return 0;
