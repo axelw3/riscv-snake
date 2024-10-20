@@ -39,9 +39,6 @@ void set_displays(int display_number, int value){
       (*seg7display) = 0b01111111;
   }
 
-
-
-
   char dp = 0;
   if(display_number % 2 == 1 || display_number == 0){
     dp = 0b10000000;
