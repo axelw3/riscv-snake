@@ -17,11 +17,29 @@ int get_sw( void ){
   return *((volatile int*) 0x04000010) & 0b1111111111;
 }
 
+int get_gpio(){
+  volatile int* gpio_pointer = (volatile int*) 0x040000e0;
+  return *gpio_pointer;
+}
+
+void set_gpio(int value){
+  volatile int* gpio_pointer = (volatile int*) 0x040000e0;
+  *gpio_pointer = value;
+}
+
+int get button_state(){
+  int gpio_state = get_gpio();
+  if(gpio_state == 1 || gpio_state == 2 || gpio_state == 4 || gpio_state == 8) {
+    return gpio_state;
+  }
+  else{
+    return 0;
+  }
+}
+
 int main() {
     while(1) {
-        volatile short* accelePointer = (short*) 0x32;
-        display_2_dig_short(0, ((*accelePointer & 0b11111111)));
-        set_leds(1);
+        set_leds(get_button_state());
     }
     return 0;
 };
