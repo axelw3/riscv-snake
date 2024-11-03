@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "accele.h"
+#include "seven_seg.h"
 #include "dtekv_lib.h"
 
 //#include "accele.c"
@@ -27,7 +27,7 @@ void set_gpio(int value){
   *gpio_pointer = value;
 }
 
-int get button_state(){
+int get_button_state(){
   int gpio_state = get_gpio();
   if(gpio_state == 1 || gpio_state == 2 || gpio_state == 4 || gpio_state == 8) {
     return gpio_state;

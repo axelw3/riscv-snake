@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "accele.C": "cpp"
+        "accele.C": "cpp",
+        "seven_seg.h": "c",
+        "dtekv_lib.h": "c"
     }
 }
