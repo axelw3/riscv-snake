@@ -38,8 +38,13 @@ int get_button_state(){
 }
 
 int main() {
+    unsigned char current_state = 0;
     while(1) {
-        set_leds(get_button_state());
+        if (get_button_state_change() != 0) {
+          current_state = get_button_state_change();
+        }
+
+        set_leds(current_state);
     }
     return 0;
 };
