@@ -38,7 +38,6 @@ int get_button_state(){
 }
 
 int main() {
-    unsigned char current_state = 0;
     while(1) {
       set_leds(get_dpad_state());
     }

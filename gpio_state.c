@@ -1,57 +1,27 @@
-unsigned char LAST_BUTTONSTATE = 0b0000;
-unsigned char MOVE_DIRECTION = 0;
+// Determine direction if one button pressed. Else ignore.
+unsigned char* get_dpad_state() {
+    volatile int* gpio_pointer = (volatile int*) 0x040000e0;
+    unsigned char dpad_state = *gpio_pointer & 0b1111;
 
-void updateButtonState(const unsigned char newState){
-    unsigned char changedBtns = LAST_BUTTONSTATE ^ newState; // bitwise XOR
-    switch(changedBtns){
-        case 0b0001:
+    switch(dpad_state){
+        case 0b1110:
             // höger
-            MOVE_DIRECTION = 0;
+            return 1;
             break;
-        case 0b0010:
+        case 0b1101:
             // vänster
-            MOVE_DIRECTION = 1;
+            return 2;
             break;
-        case 0b0100:
+        case 0b1011:
             // ner
-            MOVE_DIRECTION = 2;
+            return 3;
             break;
-        case 0b1000:
+        case 0b0111:
             // upp
-            MOVE_DIRECTION = 3;
+            return 4;
             break;
         default:
+            // no input
+            return 0b0000;
     }
-    LAST_BUTTONSTATE = newState;
-    return;
-}
-
-unsigned char get_dpad_state() {
-    unsigned char changedBtns = LAST_BUTTONSTATE ^ *((volatile int*) 0x040000e0);
-    switch(changedBtns){
-        case 0b0001:
-            // höger
-            if ((LAST_BUTTONSTATE & 0b1) == 0) {
-                MOVE_DIRECTION = 1;
-            } else {
-            MOVE_DIRECTION = 0;
-            }
-
-            break;
-        case 0b0010:
-            // vänster
-            MOVE_DIRECTION = 1;
-            break;
-        case 0b0100:
-            // ner
-            MOVE_DIRECTION = 2;
-            break;
-        case 0b1000:
-            // upp
-            MOVE_DIRECTION = 3;
-            break;
-        default:
-    }
-
-    return MOVE_DIRECTION;
     }
