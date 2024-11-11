@@ -1,27 +1,30 @@
-// Determine direction if one button pressed. Else ignore.
-unsigned char* get_dpad_state() {
-    volatile int* gpio_pointer = (volatile int*) 0x040000e0;
-    unsigned char dpad_state = *gpio_pointer & 0b1111;
+#include "gpio_state.h"
 
-    switch(dpad_state){
-        case 0b1110:
-            // höger
-            return 1;
-            break;
-        case 0b1101:
-            // vänster
-            return 2;
-            break;
-        case 0b1011:
-            // ner
-            return 3;
-            break;
-        case 0b0111:
-            // upp
-            return 4;
-            break;
-        default:
-            // no input
-            return 0b0000;
+/**
+ * Possible dpad states: up, down, left and right.
+*/
+enum DPAD_STATE{
+    UP = 0b1000,
+    DOWN = 0b0100,
+    LEFT = 0b0010,
+    RIGHT = 0b0001
+};
+
+static unsigned char DPAD_RAW_STATE = 0b0001;
+static volatile int* gpio_pointer = (volatile int*) 0x040000e0;
+
+// Determine next direction to move.
+enum DPAD_STATE get_dpad_state() {
+    unsigned char new_dpad_state = ~(*gpio_pointer & 0b1111);
+    unsigned char new_heading = (new_dpad_state ^ DPAD_RAW_STATE) & new_dpad_state;
+
+    switch(new_heading){
+        case UP:
+        case DOWN:
+        case LEFT:
+        case RIGHT:
+            DPAD_RAW_STATE = new_heading;
     }
-    }
+
+    return (enum DPAD_STATE) DPAD_RAW_STATE;
+}
