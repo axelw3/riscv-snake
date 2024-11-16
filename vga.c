@@ -41,13 +41,3 @@ void fillSquare(unsigned int x0, unsigned int y0, unsigned int w, unsigned int h
     }
     return;
 }
-
-/**
- * Example main function. Draws a 30x30 filled square at x = 10, y = 10.
-*/
-int main(){
-    fillSquare(10, 10, 30, 30, 0xd4);
-    swap();
-
-    return 0;
-}

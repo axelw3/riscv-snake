@@ -2,6 +2,7 @@
 #include "seven_seg.h"
 #include "gpio_state.h"
 #include "DPAD_STATE.h"
+#include "vga.h"
 
 void handle_interrupt(unsigned int cause){}
 
@@ -38,6 +39,9 @@ int get_button_state(){
 */
 
 int main(){
+  fillSquare(10, 10, 30, 30, 0xd4);
+  swap();
+
   while(1){
       enum DPAD_STATE state = get_dpad_state();
       switch(state) {
