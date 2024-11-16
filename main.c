@@ -1,6 +1,7 @@
 #include "dtekv_lib.h"
 #include "seven_seg.h"
 #include "gpio_state.h"
+#include "DPAD_STATE.h"
 
 void handle_interrupt(unsigned int cause){}
 
@@ -37,11 +38,24 @@ int get_button_state(){
 */
 
 int main(){
-    while(1){
-        set_leds(
-            get_dpad_state()
-        );
-    }
+  while(1){
+      enum DPAD_STATE state = get_dpad_state();
+      switch(state) {
+        case RIGHT:
+          set_leds(0b1110);
+          break;
+        case UP:
+          set_leds(0b1101);
+          break;
+        case LEFT:
+          set_leds(0b1011);
+          break;
+        case DOWN:
+          set_leds(0b0111);
+          break;
+        default:
+      }
+  }
 
-    return 0;
+  return 0;
 };

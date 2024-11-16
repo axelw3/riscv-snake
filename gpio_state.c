@@ -1,14 +1,15 @@
 #include "gpio_state.h"
+#include "DPAD_STATE.h"
 
 /**
  * Possible dpad states: up, down, left and right.
 */
-enum DPAD_STATE{
-    UP = 0b1000,
-    DOWN = 0b0100,
-    LEFT = 0b0010,
-    RIGHT = 0b0001
-};
+// enum DPAD_STATE{
+//     UP = 0b1000,
+//     DOWN = 0b0100,
+//     LEFT = 0b0010,
+//     RIGHT = 0b0001
+// };
 
 static unsigned char DPAD_RAW_STATE = 0b0001;
 static volatile int* gpio_pointer = (volatile int*) 0x040000e0;
