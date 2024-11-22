@@ -39,7 +39,8 @@ int get_button_state(){
 */
 
 int main(){
-  fillSquare(10, 10, 30, 30, 0xd4);
+  resetAllPixels();
+  fillSquare(2, 1, 2, 2, 0x2);
   swap();
 
   while(1){

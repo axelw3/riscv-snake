@@ -2,6 +2,7 @@
  * Width, in pixels.
 */
 const unsigned int WIDTH = 320;
+const unsigned int HEIGHT = 240;
 
 /**
  * VGA backbuffer.
@@ -40,4 +41,15 @@ void fillSquare(unsigned int x0, unsigned int y0, unsigned int w, unsigned int h
         }
     }
     return;
+}
+
+/*
+Reset pixel buffer
+*/
+void resetAllPixels(){
+    for(int x = 0; x < WIDTH; x++){
+        for(int y = 0; y < HEIGHT; y++){
+            setPixel(x, y, 0x0);
+        }
+    }
 }
