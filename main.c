@@ -46,17 +46,17 @@ int main(){
   while(1){
       enum DPAD_STATE state = get_dpad_state();
       switch(state) {
-        case RIGHT:
-          set_leds(0b1110);
-          break;
         case UP:
           set_leds(0b1101);
+          break;
+        case DOWN:
+          set_leds(0b0111);
           break;
         case LEFT:
           set_leds(0b1011);
           break;
-        case DOWN:
-          set_leds(0b0111);
+        case RIGHT:
+          set_leds(0b1110);
           break;
         default:
       }
