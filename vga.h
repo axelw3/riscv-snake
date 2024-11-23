@@ -4,6 +4,6 @@
 
 void fillSquare(unsigned int x0, unsigned int y0, unsigned int w, 
                 unsigned int h, unsigned char color);
-swap();
+void swap();
 
 #endif // VGA_H

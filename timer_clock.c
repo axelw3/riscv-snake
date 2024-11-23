@@ -1,3 +1,8 @@
+#include "timer_clock.h"
+#include "dtekv_lib.h"
+
+extern void enable_interrupt( void );
+
 /*
 * Enable interrupts in DTEK-V board.
 * Oscillator frequency = 30 MHz

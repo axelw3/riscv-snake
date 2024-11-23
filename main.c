@@ -4,26 +4,31 @@
 #include "gpio_state.h"
 #include "DPAD_STATE.h"
 #include "vga.h"
+#include "timer_clock.h"
+
+void set_leds(int led_mask){
+    volatile int* led_pointer = (volatile int*) 0x04000000;
+    (*led_pointer) = led_mask & 0b1111111111;
+}
 
 /*
 * Used to communicate with main() (or anytime the program should rest).
 * Since the program will keep CPU, there is no need to allow 
 * for multiple users of the TIMER_TIMOUT variable.
 */
-unsigned short TIMER_TIMEOUT = 0;
+short TIMER_TIMEOUT = 0;
+int timeout_count = 0;
 
 /* Called from assembly code. */
 void handle_interrupt(unsigned int cause){
   if(cause == 16){
-    TIMER_TIMEOUT = 1;
     // bekräfta IRQ genom att nollställa TO-biten (avsnitt 23.4.4 i dokumentationen)
     *((volatile unsigned short*) 0x04000020) &= (unsigned short int) !0b1; //0b1111111111111110; // reset
-  }
-}
 
-void set_leds(int led_mask){
-    volatile int* led_pointer = (volatile int*) 0x04000000;
-    (*led_pointer) = led_mask & 0b1111111111;
+    if(timeout_count++ % 10 == 0) {
+      TIMER_TIMEOUT = 1;
+    }
+  }
 }
 
 /* Get switch state. */
@@ -54,17 +59,25 @@ int get_button_state(){
 */
 
 int main(){
+  timer_setup();
+
   resetAllPixels();
-  fillSquare(2, 1, 2, 2, 0x2);
+  fillSquare(0, 0, 24, 24, 0xcc);
   swap();
 
-int x_offset, y_offset = 0;
+  unsigned short x_offset = 8;
+  unsigned short y_offset = 8;
+
+
   while(1) {
+    set_leds(TIMER_TIMEOUT);
     if(TIMER_TIMEOUT == 1) {
       resetAllPixels();
-      fillsquare(4, 4, x_offset, y_offset, 0x2);
-      x_offset++;
-      y_offset++;
+      fillSquare(x_offset, y_offset, 12, 12, 0x1);
+      swap();
+      x_offset += 4;
+      y_offset += 4;
+      TIMER_TIMEOUT = 0;
     }
   }
 

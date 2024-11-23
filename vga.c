@@ -1,3 +1,5 @@
+//#include "vga.h"
+
 /**
  * Width, in pixels.
 */
