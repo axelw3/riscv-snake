@@ -1,10 +1,25 @@
+// Other files
 #include "dtekv_lib.h"
 #include "seven_seg.h"
 #include "gpio_state.h"
 #include "DPAD_STATE.h"
 #include "vga.h"
 
-void handle_interrupt(unsigned int cause){}
+/*
+* Used to communicate with main() (or anytime the program should rest).
+* Since the program will keep CPU, there is no need to allow 
+* for multiple users of the TIMER_TIMOUT variable.
+*/
+unsigned short TIMER_TIMEOUT = 0;
+
+/* Called from assembly code. */
+void handle_interrupt(unsigned int cause){
+  if(cause == 16){
+    TIMER_TIMEOUT = 1;
+    // bekräfta IRQ genom att nollställa TO-biten (avsnitt 23.4.4 i dokumentationen)
+    *((volatile unsigned short*) 0x04000020) &= (unsigned short int) !0b1; //0b1111111111111110; // reset
+  }
+}
 
 void set_leds(int led_mask){
     volatile int* led_pointer = (volatile int*) 0x04000000;
@@ -42,6 +57,16 @@ int main(){
   resetAllPixels();
   fillSquare(2, 1, 2, 2, 0x2);
   swap();
+
+int x_offset, y_offset = 0;
+  while(1) {
+    if(TIMER_TIMEOUT == 1) {
+      resetAllPixels();
+      fillsquare(4, 4, x_offset, y_offset, 0x2);
+      x_offset++;
+      y_offset++;
+    }
+  }
 
   while(1){
       enum DPAD_STATE state = get_dpad_state();
