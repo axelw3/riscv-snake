@@ -16,7 +16,7 @@ void set_leds(int led_mask){
 * Since the program will keep CPU, there is no need to allow 
 * for multiple users of the TIMER_TIMOUT variable.
 */
-short TIMER_TIMEOUT = 0;
+volatile short TIMER_TIMEOUT = 0;
 int timeout_count = 0;
 
 /* Called from assembly code. */
@@ -59,6 +59,7 @@ int get_button_state(){
 */
 
 int main(){
+  TIMER_TIMEOUT = 1;
   timer_setup();
 
   resetAllPixels();
@@ -67,7 +68,6 @@ int main(){
 
   unsigned short x_offset = 8;
   unsigned short y_offset = 8;
-
 
   while(1) {
     set_leds(TIMER_TIMEOUT);
