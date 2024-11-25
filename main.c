@@ -71,7 +71,7 @@ int main(){
 
   while(1) {
     set_leds(TIMER_TIMEOUT);
-    if(TIMER_TIMEOUT == 1) {
+    if(TIMER_TIMEOUT) {
       resetAllPixels();
       fillSquare(x_offset, y_offset, 12, 12, 0x1);
       swap();
