@@ -12,6 +12,8 @@ void set_leds(int led_state){
     (*led_pointer) = led_state & 0b1111111111;
 }
 
+// TODO: Använd timers?
+
 int main(){
     signed char sh[2],  // position of the snake's head
                 st[2],  // position of the snake's tail
@@ -38,13 +40,15 @@ int main(){
     unsigned int t = 0;
     signed char atNextPos;
 
+    // TODO: Generera ett äpple här
+
     while(1){
         move_direction = get_dpad_state();
 
         if(t++ == 10000){
             t = 0;
 
-            switch(move_direction) {
+            switch(move_direction){
             case RIGHT:
                 snh[0]++;
                 break;
@@ -76,6 +80,8 @@ int main(){
                 snakeLength++;
                 set_displays(0, snakeLength / 10);
                 set_displays(1, snakeLength % 10);
+
+                // TODO: Generera ett äpple här
             }else{
                 // no collision, no apple
 
@@ -97,6 +103,9 @@ int main(){
 
                 mSet(st, EMPTY); // ta bort gammal svans
             }
+
+            // TODO: Rendera allt
+            // alternativt: rendera enstaka element, samtidigt som de modifieras ovan
         }
     }
 
