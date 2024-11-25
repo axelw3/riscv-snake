@@ -1,21 +1,11 @@
 #include "gpio_state.h"
-#include "DPAD_STATE.h"
-
-/**
- * Possible dpad states: up, down, left and right.
-*/
-// enum DPAD_STATE{
-//     UP = 0b1000,
-//     DOWN = 0b0100,
-//     LEFT = 0b0010,
-//     RIGHT = 0b0001
-// };
+#include "dpad_state.h"
 
 static unsigned char DPAD_RAW_STATE = 0b0001;
 static volatile int* gpio_pointer = (volatile int*) 0x040000e0;
 
 // Determine next direction to move.
-enum DPAD_STATE get_dpad_state() {
+enum Direction get_dpad_state() {
     unsigned char new_dpad_state = ~(*gpio_pointer & 0b1111);
     unsigned char new_heading = (new_dpad_state ^ DPAD_RAW_STATE) & new_dpad_state;
 
@@ -27,5 +17,5 @@ enum DPAD_STATE get_dpad_state() {
             DPAD_RAW_STATE = new_heading;
     }
 
-    return (enum DPAD_STATE) DPAD_RAW_STATE;
+    return (enum Direction) DPAD_RAW_STATE;
 }
