@@ -13,8 +13,8 @@ void set_leds(int led_mask){
 
 /*
 * Used to communicate with main() (or anytime the program should rest).
-* Since the program will keep CPU, there is no need to allow 
-* for multiple users of the TIMER_TIMOUT variable.
+* Take care to ensure that only one if statment waints for TIMER_TIMEOUT = 1,
+* as to maintain consistency in execution.
 */
 volatile short TIMER_TIMEOUT = 0;
 int timeout_count = 0;
