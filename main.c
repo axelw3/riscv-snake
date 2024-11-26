@@ -13,7 +13,7 @@ void set_leds(int led_mask){
 
 /*
 * Used to communicate with main() (or anytime the program should rest).
-* Take care to ensure that only one if statment waints for TIMER_TIMEOUT = 1,
+* Take care to ensure that only one if statment waits for TIMER_TIMEOUT = 1,
 * as to maintain consistency in execution.
 */
 volatile short TIMER_TIMEOUT = 0;
