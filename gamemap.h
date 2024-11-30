@@ -10,10 +10,9 @@
 
 #define TILE_SIZE 16
 
-const signed char   MAP_W = SCR_W / TILE_SIZE,
-                    MAP_H = SCR_H / TILE_SIZE;
+extern const signed char MAP_W, MAP_H;
 
-unsigned char map[(SCR_W / TILE_SIZE) * (SCR_H / TILE_SIZE)]; // 300 bytes
+extern unsigned char map[]; // 300 bytes
 
 /**
  * Mutually exclusive tile states/data.

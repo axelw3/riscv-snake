@@ -9,16 +9,6 @@
 #define SCR_H 240
 
 /**
- * VGA backbuffer.
-*/
-volatile char *VGA = (volatile char*) 0x08000000;
-
-/**
- * DMA controller register.
-*/
-volatile char *VGA_CTRL = (volatile char*) 0x04000100;
-
-/**
  * Set the color of a pixel in the backbuffer.
 */
 void setPixel(unsigned int x, unsigned int y, unsigned char color);

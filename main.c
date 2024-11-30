@@ -45,7 +45,7 @@ int main(){
     const unsigned short sz = MAP_W * MAP_H;
 
     for(unsigned short i = 0; i < sz; i++){
-        map[i] = EMPTY; // reset map
+        *((unsigned char*) map + i) = EMPTY; // reset map
     }
 
     sh[0] = 5;      sh[1] = 5; // head at 5,5
