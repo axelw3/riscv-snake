@@ -93,8 +93,8 @@ int main(){
                 // TODO: lose game
             }
 
-            mSet(snh[0], snh[1], SHEAD); // add new head
-            mSet(sh[0], sh[1], mTrDir(move_direction)); // set old head to a tail piece pointing forward
+            mSet(snh, SHEAD); // add new head
+            mSet(sh, mTrDir(move_direction)); // set old head to a tail piece pointing forward
 
             sh[0] = snh[0]; sh[1] = snh[1]; // updatera huvudposition
 
