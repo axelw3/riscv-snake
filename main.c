@@ -1,18 +1,42 @@
+// Other files
 #include "dtekv_lib.h"
 #include "seven_seg.h"
 #include "gpio_state.h"
 #include "dpad_state.h"
 #include "vga.h"
+#include "timer_clock.h"
 #include "gamemap.h"
-
-void handle_interrupt(unsigned int cause){}
 
 void set_leds(int led_state){
     volatile int* led_pointer = (volatile int*) 0x04000000;
     (*led_pointer) = led_state & 0b1111111111;
 }
 
-// TODO: Använd timers?
+/*
+* Used to communicate with main() (or anytime the program should rest).
+* Take care to ensure that only one if statment waits for TIMER_TIMEOUT = 1,
+* as to maintain consistency in execution.
+*/
+volatile short TIMER_TIMEOUT = 0;
+int timeout_count = 0;
+
+/* Called from assembly code. */
+void handle_interrupt(unsigned int cause){
+  if(cause == 16){
+    // bekräfta IRQ genom att nollställa TO-biten (avsnitt 23.4.4 i dokumentationen)
+    *((volatile unsigned short*) 0x04000020) &= (unsigned short int) !0b1; //0b1111111111111110; // reset
+
+    if(timeout_count++ % 10 == 0) {
+      TIMER_TIMEOUT = 1;
+    }
+  }
+}
+
+/* Get switch state. */
+int get_sw(){
+    return *((volatile int*) 0x04000010) & 0b1111111111;
+}
+=======
 
 int main(){
     signed char sh[2],  // position of the snake's head
@@ -108,6 +132,7 @@ int main(){
             // alternativt: rendera enstaka element, samtidigt som de modifieras ovan
         }
     }
+
 
     return 0;
 };

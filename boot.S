@@ -5,6 +5,7 @@ welcome_msg: .asciz "================================================\n===== RIS
 .section .text
 .align 2
 .globl _start
+.globl enable_interrupt
 	
 _isr_handler:
 	j _isr_routine	   /* ISR service routine here */
@@ -124,3 +125,13 @@ _start:
 	jal main
 	
 loop:	j loop
+
+enable_interrupt:
+	// Enable interrupts: Set global interrupts bit (MIE - bit #3 in mstatus).
+	csrsi mstatus, 3
+
+	// Enable interrupts on CPU: Allows interrupts from the timer.
+	// Set bit 16 (cause number of timer interrupt) in register "mie".
+	csrsi mie, 16
+
+	jr ra
