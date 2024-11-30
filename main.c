@@ -36,7 +36,6 @@ void handle_interrupt(unsigned int cause){
 int get_sw(){
     return *((volatile int*) 0x04000010) & 0b1111111111;
 }
-=======
 
 int main(){
     signed char sh[2],  // position of the snake's head
@@ -123,6 +122,7 @@ int main(){
                     case SBOND:
                         st[1]++;
                         break;
+                    default:
                 }
 
                 mSet(st, EMPTY); // ta bort gammal svans
