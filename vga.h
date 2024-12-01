@@ -10,7 +10,10 @@
 /**
  * Set the color of a pixel in the backbuffer.
 */
-void setPixel(unsigned int x, unsigned int y, unsigned char color);
+inline void setPixel(unsigned int x, unsigned int y, unsigned char color){
+    *(VGA + y * SCR_W + x) = color;
+    return;
+}
 
 /**
  * Perform framebuffer swap.

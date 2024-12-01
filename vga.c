@@ -12,11 +12,6 @@ volatile char *VGA = (volatile char*) 0x08000000;
 */
 volatile char *VGA_CTRL = (volatile char*) 0x04000100;
 
-void setPixel(unsigned int x, unsigned int y, unsigned char color){
-    *(VGA + y * SCR_W + x) = color;
-    return;
-}
-
 void swap(){
     *(VGA_CTRL + 1) = (int) VGA; // set address of rgb data
     *VGA_CTRL = 0; // swap
