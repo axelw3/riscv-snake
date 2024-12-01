@@ -91,11 +91,12 @@ int main(){
     while(1){
         timer_start();
 
+        move_direction = get_dpad_state();
+
         // debug
         // TODO: ta bort denna rad
-        set_leds((int) get_dpad_state());
+        set_leds((int) move_direction);
 
-        move_direction = get_dpad_state();
         switch(move_direction){
         case RIGHT:
             snh[0]++;
