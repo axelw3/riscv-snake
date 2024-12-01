@@ -17,10 +17,10 @@ void mSet(signed char *i, enum TileData newState){
             fillSquare(i[0] * TILE_SIZE, i[1] * TILE_SIZE, TILE_SIZE, TILE_SIZE, APPLE_COLOR);
             break;
         case SHEAD:
-            fillSquare(i[0] * TILE_SIZE, i[1] * TILE_SIZE, TILE_SIZE, TILE_SIZE, APPLE_COLOR);
+            fillSquare(i[0] * TILE_SIZE, i[1] * TILE_SIZE, TILE_SIZE, TILE_SIZE, HEAD_COLOR);
             break;
         default:
-            fillSquare(i[0] * TILE_SIZE, i[1] * TILE_SIZE, TILE_SIZE, TILE_SIZE, APPLE_COLOR);
+            fillSquare(i[0] * TILE_SIZE, i[1] * TILE_SIZE, TILE_SIZE, TILE_SIZE, TAIL_COLOR);
             break;
     }
 }
