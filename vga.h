@@ -29,4 +29,9 @@ void fillSquare(unsigned int x0, unsigned int y0, unsigned int w,
 */
 void resetAllPixels();
 
+/**
+ * Draw all changes in map
+ */
+void invalidate();
+
 #endif // VGA_H

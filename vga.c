@@ -1,4 +1,5 @@
 #include "vga.h"
+#include "gamemap.h"
 
 /**
  * VGA backbuffer.
@@ -36,4 +37,26 @@ void resetAllPixels(){
             setPixel(x, y, 0x0);
         }
     }
+}
+
+/**
+ * Updates VGA buffer based on state of 'map' when called.
+ */
+void invalidate(){
+    for(short x = 0; x <= MAP_W; x++){
+        for(short y = 0; y <= MAP_H; y++){
+            switch (mGet(x * y)){
+                case EMPTY:
+                    fillSquare(x * MAP_W, y * MAP_H, MAP_W, MAP_H, 0x0);
+                    break;
+                case APPLE:
+                    fillSquare(x * MAP_W, y * MAP_H, MAP_W, MAP_H, 0xDC);
+                    break;
+                case SHEAD:
+                    fillSquare(x * MAP_W, y * MAP_H, MAP_W, MAP_H, 0x1);
+                default:
+                    fillSquare(x * MAP_W, y * MAP_H, MAP_W, MAP_H, mGet(x*y));
+            }
+        }
+    } 
 }
