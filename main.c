@@ -39,9 +39,8 @@ int get_sw(){
 
 void showTitleScreen(){
     drawText(10, 10, "SNAKE", 0xC);
-    while(1){
-        // do nothing
-    }
+    //drawText(10, 24, "PRESS KEY1 TO START", 0xFF);
+    while((*((volatile char*) 0x040000d0) & 0b00000001) == 0);
 }
 
 void startGame(){
