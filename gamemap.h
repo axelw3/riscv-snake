@@ -8,7 +8,25 @@
 #error
 #endif
 
+/**
+ * Tile size, in pixels.
+*/
 #define TILE_SIZE 16
+
+/**
+ * Snake head color.
+*/
+#define HEAD_COLOR 0xFF
+
+/**
+ * Snake tail color.
+*/
+#define TAIL_COLOR 0xF
+
+/**
+ * Apple color.
+*/
+#define APPLE_COLOR 0xC3
 
 extern const signed char MAP_W, MAP_H;
 
@@ -32,9 +50,7 @@ enum TileData{
  * @param i a two-element byte array containing the x/y position
  * @param newState new data value
 */
-inline void mSet(signed char *i, enum TileData newState){
-    map[MAP_W * i[1] + i[0]] = (unsigned char) newState;
-}
+void mSet(signed char *i, enum TileData newState);
 
 /**
  * Get data for a game tile.
