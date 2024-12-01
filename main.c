@@ -62,8 +62,6 @@ void showGameOverScreen(short score){
 }
 
 short startGame(){
-    timerSetup();
-
     unsigned char   sh[2],  // position of the snake's head
                     st[2],  // position of the snake's tail
                     snh[2], // nästa position för snake-huvud (temporär användning)
@@ -165,6 +163,12 @@ short startGame(){
 }
 
 int main(){
+    // Clock is started here, since we use the timer value for pseudo-
+    // RNG, and this guarantees some kind of randomness (based on time
+    // user input (in this case depending on how much time elapses
+    // between startup and game start).
+    timerSetup();
+
     while(1){
         resetAllPixels();
         showTitleScreen();
