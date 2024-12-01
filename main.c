@@ -22,22 +22,22 @@ int timeout_count = 0;
 
 /* Called from assembly code. */
 void handle_interrupt(unsigned int cause){
-  if(cause == 16){
-    // bekräfta IRQ genom att nollställa TO-biten (avsnitt 23.4.4 i dokumentationen)
-    *((volatile unsigned short*) 0x04000020) &= (unsigned short int) !0b1; //0b1111111111111110; // reset
+    if(cause == 16){
+        // bekräfta IRQ genom att nollställa TO-biten (avsnitt 23.4.4 i dokumentationen)
+        *((volatile unsigned short*) 0x04000020) &= (unsigned short int) !0b1; //0b1111111111111110; // reset
 
-    if(timeout_count++ % 10 == 0) {
-        TIMER_TIMEOUT = 1;
+        if(timeout_count++ % 10 == 0) {
+            TIMER_TIMEOUT = 1;
+        }
     }
-  }
 }
 
 /**
  * Starts timer.
 */
 void timer_start(){
-  TIMER_TIMEOUT = 0;
-  return;
+    TIMER_TIMEOUT = 0;
+    return;
 }
 
 /**
@@ -46,7 +46,7 @@ void timer_start(){
 void timer_cpu_hold_wait(){
   while(1){
     if(TIMER_TIMEOUT == 1){
-      return;
+        return;
     }
   }
 }
@@ -75,7 +75,7 @@ int main(){
 
     snh[0] = sh[0]; snh[1] = sh[1]; // initial ny huvudposition = aktuell huvudposition (ovan)
 
-    short snakeLength = 1; // ej betydande för spelbarhet, endast för visning av poäng
+    short snakeLength = 1; // ej avgörande för spelbarhet, endast för visning av poäng
     set_displays(0, snakeLength / 10);
     set_displays(1, snakeLength % 10);
 
@@ -147,12 +147,38 @@ int main(){
         }
 
         // TODO: Rendera allt
-        invalidate();
+        //invalidate();
 
-        fillSquare(sh[0] * MAP_W, sh[1] * MAP_H, 5, 5, 0xFF);
-        fillSquare(snh[0] * MAP_W, snh[1] * MAP_H, 4, 4, 0xF5);
-        fillSquare(st[0] * MAP_W, st[1] * MAP_H, 3, 3, 0xF);
-        set_leds(MAP_W);
+        fillSquare(sh[0] * TILE_SIZE, sh[1] * TILE_SIZE, TILE_SIZE, TILE_SIZE, 0xFF);
+
+        snh[0] = st[0]; snh[1] = st[1]; // börja på sista svansbiten
+
+        // vandra framåt längs svansen till huvudet nås, och rita svansbitar på vägen
+        // TODO: Gör detta mer effektivt under spelets gång istället (rendera endast tiles när de ändras)
+        while(snh[0] != sh[0] && snh[1] != sh[1]){
+            fillSquare(snh[0] * TILE_SIZE, snh[1] * TILE_SIZE, TILE_SIZE, TILE_SIZE, 0xF);
+
+            switch(mGet(snh)){
+                case SBONU:
+                    snh[1]--;
+                    break;
+                case SBONR:
+                    snh[0]++;
+                    break;
+                case SBOND:
+                    snh[1]++;
+                    break;
+                case SBONL:
+                    snh[0]--;
+                    break;
+                default:
+                    snh[0] = sh[0];
+                    snh[1] = sh[1];
+                    break;
+            }
+        }
+
+        //set_leds(MAP_W);
         timer_cpu_hold_wait();
     }
 
