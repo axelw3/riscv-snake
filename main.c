@@ -148,6 +148,11 @@ int main(){
 
         // TODO: Rendera allt
         invalidate();
+
+        fillSquare(sh[0] * MAP_W, sh[1] * MAP_H, 5, 5, 0xFF);
+        fillSquare(snh[0] * MAP_W, snh[1] * MAP_H, 4, 4, 0xF5);
+        fillSquare(st[0] * MAP_W, st[1] * MAP_H, 3, 3, 0xF);
+        set_leds(MAP_W);
         timer_cpu_hold_wait();
     }
 

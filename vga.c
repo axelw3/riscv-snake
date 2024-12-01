@@ -43,8 +43,8 @@ void resetAllPixels(){
  * Updates VGA buffer based on state of 'map' when called.
  */
 void invalidate(){
-    for(short x = 0; x <= MAP_W; x++){
-        for(short y = 0; y <= MAP_H; y++){
+    for(short x = 0; x <= MAP_H; x++){
+        for(short y = 0; y <= MAP_W; y++){
             switch (mGet(x * y)){
                 case EMPTY:
                     fillSquare(x * MAP_W, y * MAP_H, MAP_W, MAP_H, 0x0);
@@ -53,7 +53,7 @@ void invalidate(){
                     fillSquare(x * MAP_W, y * MAP_H, MAP_W, MAP_H, 0xDC);
                     break;
                 case SHEAD:
-                    fillSquare(x * MAP_W, y * MAP_H, MAP_W, MAP_H, 0x1);
+                    fillSquare(x * MAP_W, y * MAP_H, MAP_W, MAP_H, 0xF);
                 default:
                     fillSquare(x * MAP_W, y * MAP_H, MAP_W, MAP_H, 0xc0);
             }
