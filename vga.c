@@ -45,7 +45,7 @@ void resetAllPixels(){
 void invalidate(){
     for(short x = 0; x <= MAP_H; x++){
         for(short y = 0; y <= MAP_W; y++){
-            switch (mGet(x * y)){
+            switch (*((unsigned char*) map + (x * y))){
                 case EMPTY:
                     fillSquare(x * MAP_W, y * MAP_H, MAP_W, MAP_H, 0x0);
                     break;
@@ -54,8 +54,10 @@ void invalidate(){
                     break;
                 case SHEAD:
                     fillSquare(x * MAP_W, y * MAP_H, MAP_W, MAP_H, 0xF);
+                    break;
                 default:
                     fillSquare(x * MAP_W, y * MAP_H, MAP_W, MAP_H, 0xc0);
+                    break;
             }
         }
     } 
