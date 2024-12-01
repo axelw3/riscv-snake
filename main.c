@@ -93,7 +93,7 @@ int main(){
 
         // debug
         // TODO: ta bort denna rad
-        set_leds(*((volatile int*) 0x040000e0));
+        set_leds((int) get_dpad_state());
 
         move_direction = get_dpad_state();
         switch(move_direction){
