@@ -55,7 +55,7 @@ void invalidate(){
                 case SHEAD:
                     fillSquare(x * MAP_W, y * MAP_H, MAP_W, MAP_H, 0x1);
                 default:
-                    fillSquare(x * MAP_W, y * MAP_H, MAP_W, MAP_H, mGet(x*y));
+                    fillSquare(x * MAP_W, y * MAP_H, MAP_W, MAP_H, 0xc0);
             }
         }
     } 
