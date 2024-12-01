@@ -28,6 +28,12 @@ void handle_interrupt(unsigned int cause){
     }
 }
 
+void randomPosition(signed char *position){
+    unsigned short t = getTimeLow();
+    position[0] = (t & 0xFF) % MAP_W;
+    position[1] = (t >> 2) % MAP_H;
+}
+
 void showTitleScreen(){
     drawText(10, 10, "SNAKE", 0xC);
     drawText(10, 24, "PRESS KEY1 TO START", 0xFF);
@@ -55,14 +61,17 @@ short startGame(){
     signed char sh[2],  // position of the snake's head
                 st[2],  // position of the snake's tail
                 snh[2], // nästa position för snake-huvud (temporär användning)
-                snt[2]; // nästa position för sista tail-biten (temporär användning)
+                snt[2], // nästa position för sista tail-biten (temporär användning)
+                ap[2]; // nuvarande äppel-position
 
     for(unsigned short i = 0; i < MAP_W * MAP_H; i++){
         map[i] = EMPTY; // reset map
     }
 
-    sh[0] = 5;      sh[1] = 5; // head at 5,5
-    st[0] = sh[0];  st[1] = sh[1]; // tail at same location
+    sh[0] = 5;      sh[1] = 5;      // head at 5,5
+    ap[0] = 0;      ap[1] = 0;      // set apple position (will be randomised before use)
+    st[0] = sh[0];  st[1] = sh[1];  // tail at same location
+
     mSet(sh, SHEAD); // mark tile as head on map
 
     snh[0] = sh[0]; snh[1] = sh[1]; // initial ny huvudposition = aktuell huvudposition (ovan)
@@ -74,7 +83,8 @@ short startGame(){
 
     signed char atNextPos;
 
-    // TODO: Generera ett äpple här
+    randomPosition(ap); // generera ny äppelposition
+    mSet(ap, APPLE); // skapa äpple
 
     while(1){
         while(TIMER_TIMEOUT == 0){
@@ -119,7 +129,8 @@ short startGame(){
             set_displays(0, snakeLength / 10);
             set_displays(1, snakeLength % 10);
 
-            // TODO: Generera ett äpple här
+            randomPosition(ap); // generera äppelposition
+            mSet(ap, APPLE); // skapa äpple
         }else{
             // no collision, no apple
 

@@ -22,3 +22,7 @@ void timerSetup(){
     // configure timer to generate interrupts
     *(CONTROL) = 0b111; // bits START, CONT & ITO (respectively)
 }
+
+unsigned short getTimeLow(){
+    return *((volatile unsigned short*) 0x04000030);
+}
