@@ -6,7 +6,7 @@ volatile int* gpio_pointer = (volatile int*) 0x040000e0;
 
 // Determine next direction to move.
 enum Direction get_dpad_state() {
-    unsigned char new_dpad_state = ~((*gpio_pointer) & 0b1111);
+    unsigned char new_dpad_state = 0b1111 & (~(*gpio_pointer));
     unsigned char new_heading = (new_dpad_state ^ DPAD_RAW_STATE) & new_dpad_state;
 
     switch(new_heading){
