@@ -32,12 +32,32 @@ void handle_interrupt(unsigned int cause){
   }
 }
 
+/**
+ * Starts timer.
+*/
+unsigned char timer_start(){
+  TIMER_TIMEOUT = 0;
+}
+
+/**
+ * Hold cpu in while-loop until TIMER_TIMEOUT = 1 (i.e a harware clock interrupt occurs)
+ */
+void timer_cpu_hold_wait(){
+  while(1){
+    if(TIMER_TIMEOUT == 1){
+      return;
+    }
+  }
+}
+
 /* Get switch state. */
 int get_sw(){
     return *((volatile int*) 0x04000010) & 0b1111111111;
 }
 
 int main(){
+    timer_start();
+
     signed char sh[2],  // position of the snake's head
                 st[2],  // position of the snake's tail
                 snh[2]; // nästa position för snake-huvud (temporär användning)
@@ -66,71 +86,79 @@ int main(){
     // TODO: Generera ett äpple här
 
     while(1){
-        move_direction = get_dpad_state();
+      move_direction = get_dpad_state();
 
-        if(t++ == 10000){
-            t = 0;
+      if(t++ == 10000){
+          t = 0;
 
-            switch(move_direction){
-            case RIGHT:
-                snh[0]++;
-                break;
-            case LEFT:
-                snh[0]--;
-                break;
-            case DOWN:
-                snh[1]++;
-                break;
-            case UP:
-                snh[1]--;
-                break;
+          switch(move_direction){
+          case RIGHT:
+              snh[0]++;
+              break;
+          case LEFT:
+              snh[0]--;
+              break;
+          case DOWN:
+              snh[1]++;
+              break;
+          case UP:
+              snh[1]--;
+              break;
+          }
+
+          atNextPos = mGet(snh);
+
+          if(atNextPos > 0 || snh[0] < 0 || snh[1] < 0 || snh[0] >= MAP_W || snh[1] >= MAP_H){
+              // collision with tail or with screen edge
+              // TODO: lose game
+          }
+
+          mSet(snh, SHEAD); // add new head
+          mSet(sh, mTrDir(move_direction)); // set old head to a tail piece pointing forward
+
+          sh[0] = snh[0]; sh[1] = snh[1]; // updatera huvudposition
+
+          if(atNextPos == APPLE){
+              // öka längden, dvs. vi behåller sista svansbiten denna gång
+              snakeLength++;
+              set_displays(0, snakeLength / 10);
+              set_displays(1, snakeLength % 10);
+
+              // TODO: Generera ett äpple här
+          }else{
+              // no collision, no apple
+
+              // flytta svansposition ett steg framåt (mot huvudet)
+              switch(mGet(st)){
+                  case SBONL:
+                      st[0]--;
+                      break;
+                  case SBONU:
+                      st[1]--;
+                      break;
+                  case SBONR:
+                      st[0]++;
+                      break;
+                  case SBOND:
+                      st[1]++;
+                      break;
+                  default:
+              }
+
+              mSet(st, EMPTY); // ta bort gammal svans
+          }
+
+          // TODO: Rendera allt
+          for(short x = 0; x < MAP_W; x++){
+            for(short y; y < MAP_H; y++){
+              if(map_get((MAP_W * MAP_H) != 0)){
+                fillSquare(0, 0, MAP_W, MAP_H, 0x1);
+              }
             }
-
-            atNextPos = mGet(snh);
-
-            if(atNextPos > 0 || snh[0] < 0 || snh[1] < 0 || snh[0] >= MAP_W || snh[1] >= MAP_H){
-                // collision with tail or with screen edge
-                // TODO: lose game
-            }
-
-            mSet(snh, SHEAD); // add new head
-            mSet(sh, mTrDir(move_direction)); // set old head to a tail piece pointing forward
-
-            sh[0] = snh[0]; sh[1] = snh[1]; // updatera huvudposition
-
-            if(atNextPos == APPLE){
-                // öka längden, dvs. vi behåller sista svansbiten denna gång
-                snakeLength++;
-                set_displays(0, snakeLength / 10);
-                set_displays(1, snakeLength % 10);
-
-                // TODO: Generera ett äpple här
-            }else{
-                // no collision, no apple
-
-                // flytta svansposition ett steg framåt (mot huvudet)
-                switch(mGet(st)){
-                    case SBONL:
-                        st[0]--;
-                        break;
-                    case SBONU:
-                        st[1]--;
-                        break;
-                    case SBONR:
-                        st[0]++;
-                        break;
-                    case SBOND:
-                        st[1]++;
-                        break;
-                    default:
-                }
-
-                mSet(st, EMPTY); // ta bort gammal svans
-            }
-
-            // TODO: Rendera allt
-            // alternativt: rendera enstaka element, samtidigt som de modifieras ovan
-        }
+          }
+          
+      }
+      timer_cpu_hold_wait();
     }
 
 
