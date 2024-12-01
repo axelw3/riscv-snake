@@ -1,5 +1,8 @@
 #include "font.h"
 
+// Glyph design by user "Qimplef" on fontstruct.
+// https://fontstruct.com/fontstructions/show/521592/px_5x6_1
+
 const unsigned int  FONTCHAR_A = 0b011101000111111100011000110001,
                     FONTCHAR_B = 0b111101000111110100011000111110,
                     FONTCHAR_C = 0b011111000010000100001000001111,
