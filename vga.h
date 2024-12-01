@@ -11,7 +11,7 @@
  * Set the color of a pixel in the backbuffer.
 */
 inline void setPixel(unsigned int x, unsigned int y, unsigned char color){
-    *(VGA + y * SCR_W + x) = color;
+    *((volatile char*) 0x08000000 + y * SCR_W + x) = color;
     return;
 }
 
