@@ -18,7 +18,11 @@ const unsigned int  FONTCHAR_A = 0b011101000111111100011000110001,
                     FONTCHAR_P = 0b111101000111110100001000010000,
                     FONTCHAR_Q = 0b011101000110001101011001001101,
                     FONTCHAR_R = 0b111101000111110100011000110001,
-                    FONTCHAR_S = 0b011111000001110000010000111110;
+                    FONTCHAR_S = 0b011111000001110000010000111110,
+                    FONTCHAR_T = 0b111110010000100001000010000100,
+                    FONTCHAR_U = 0b100011000110001100011000101110,
+                    FONTCHAR_NBSP = 0, 
+                    FONTCHAR_1 = 0b001000110000100001000010001110;
 
 unsigned int getCharData(char ch){
     switch(ch){
@@ -60,6 +64,12 @@ unsigned int getCharData(char ch){
             return FONTCHAR_R;
         case 'S':
             return FONTCHAR_S;
+        case 'T':
+            return FONTCHAR_T;
+        case ' ':
+            return FONTCHAR_NBSP;
+        case '1':
+            return FONTCHAR_1;
         default:
             return 0;
     }

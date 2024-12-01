@@ -39,7 +39,13 @@ int get_sw(){
 
 void showTitleScreen(){
     drawText(10, 10, "SNAKE", 0xC);
-    //drawText(10, 24, "PRESS KEY1 TO START", 0xFF);
+    drawText(10, 24, "PRESS KEY1 TO START", 0xFF);
+    while((*((volatile char*) 0x040000d0) & 0b00000001) == 0);
+}
+
+void showGameOverScreen(){
+    drawText(10, 10, "GAME OVER", 0xC);
+    drawText(10, 24, "PRESS KEY1 TO CONTINUE", 0xFF);
     while((*((volatile char*) 0x040000d0) & 0b00000001) == 0);
 }
 
@@ -151,6 +157,9 @@ int main(){
 
         resetAllPixels();
         startGame();
+
+        resetAllPixels();
+        showGameOverScreen();
     }
 
     return 0;
