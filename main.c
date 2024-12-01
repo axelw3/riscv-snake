@@ -126,6 +126,8 @@ int main(){
         }else{
             // no collision, no apple
 
+            mSet(st, EMPTY); // ta bort gammal svans
+
             // flytta svansposition ett steg framåt (mot huvudet)
             switch(mGet(st)){
                 case SBONL:
@@ -142,8 +144,6 @@ int main(){
                     break;
                 default:
             }
-
-            mSet(st, EMPTY); // ta bort gammal svans
         }
 
         // TODO: Rendera allt
