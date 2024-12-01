@@ -1,5 +1,6 @@
 #include "vga.h"
 #include "gamemap.h"
+#include "font.h"
 
 /**
  * VGA backbuffer.
@@ -39,26 +40,21 @@ void resetAllPixels(){
     }
 }
 
-/**
- * Updates VGA buffer based on state of 'map' when called.
- */
-void invalidate(){
-    for(short x = 0; x <= MAP_H; x++){
-        for(short y = 0; y <= MAP_W; y++){
-            switch (*((unsigned char*) map + (x * y))){
-                case EMPTY:
-                    fillSquare(x * MAP_W, y * MAP_H, MAP_W, MAP_H, 0x0);
-                    break;
-                case APPLE:
-                    fillSquare(x * MAP_W, y * MAP_H, MAP_W, MAP_H, 0xDC);
-                    break;
-                case SHEAD:
-                    fillSquare(x * MAP_W, y * MAP_H, MAP_W, MAP_H, 0xF);
-                    break;
-                default:
-                    fillSquare(x * MAP_W, y * MAP_H, MAP_W, MAP_H, 0xc0);
-                    break;
-            }
+void drawText(unsigned int x0, unsigned int y0, char* text, unsigned char color){
+    char ch;
+    while((ch = *(text++)) != '\0'){
+        drawChar(x0, y0, getCharData(ch), color);
+        x0 += 6;
+    }
+}
+
+void drawChar(unsigned int x0, unsigned int y0, unsigned int char_data, unsigned char color){
+    int pos = FCHAR_W * FCHAR_H;
+    do{
+        pos--;
+
+        if(char_data & 0b1){
+            setPixel(x0 + (pos % FCHAR_W), y0 + (pos / FCHAR_W), color);
         }
-    } 
+    }while(char_data >>= 1);
 }

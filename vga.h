@@ -28,9 +28,8 @@ void fillSquare(unsigned int x0, unsigned int y0, unsigned int w,
 */
 void resetAllPixels();
 
-/**
- * Draw all changes in map
- */
-void invalidate();
+void drawText(unsigned int x0, unsigned int y0, char* text, unsigned char color);
 
-#endif // VGA_H
+void drawChar(unsigned int x0, unsigned int y0, unsigned int char_data, unsigned char color);
+
+#endif

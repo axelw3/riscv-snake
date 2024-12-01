@@ -7,7 +7,7 @@ extern void enable_interrupt( void );
 * Enable interrupts in DTEK-V board.
 * Oscillator frequency = 30 MHz
 */
-void timer_setup(){
+void timerSetup(){
     volatile unsigned short* PERIOD_LOW = (volatile unsigned short*) 0x04000028;    // Timer first half
     volatile unsigned short* PERIOD_HIGH = (volatile unsigned short*) 0x0400002c;   // Timer second half
 
