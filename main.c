@@ -42,6 +42,21 @@ void randomPosition(unsigned char *position){
     position[1] = pos / MAP_W;
 }
 
+void displayScore(short score){
+    set_displays(5, -1);
+    set_displays(4, -1);
+    set_displays(3, -1);
+    set_displays(2, -1);
+
+    if(score >= 0){
+        set_displays(1, score / 10);
+        set_displays(0, score % 10);
+    }else{
+        set_displays(1, -1);
+        set_displays(0, -1);
+    }
+}
+
 void showTitleScreen(){
     drawText(10, 10, "SNAKE", 0xC);
     drawText(10, 24, "PRESS KEY1 TO START", 0xFF);
@@ -84,6 +99,7 @@ short startGame(){
     snt[0] = st[0]; snt[1] = st[1]; // initial ny tail-position = aktuell tail-position (ovan)
 
     short snakeLength = 1; // ej avgörande för spelbarhet, endast för visning av poäng
+    displayScore(snakeLength);
 
     enum Direction move_direction = RIGHT;
 
@@ -132,8 +148,7 @@ short startGame(){
         if(atNextPos == APPLE){
             // öka längden, dvs. vi behåller sista svansbiten denna gång
             snakeLength++;
-            set_displays(0, snakeLength / 10);
-            set_displays(1, snakeLength % 10);
+            displayScore(snakeLength);
 
             randomPosition(ap); // generera äppelposition
             mSet(ap, APPLE); // skapa äpple
@@ -172,6 +187,8 @@ int main(){
     timerSetup();
 
     while(1){
+        displayScore(-1);
+
         resetAllPixels();
         showTitleScreen();
 
