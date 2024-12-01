@@ -18,5 +18,5 @@ enum Direction get_dpad_state() {
             DPAD_RAW_STATE = new_heading;
     }
 
-    return (enum Direction) new_heading;
+    return (enum Direction) DPAD_RAW_STATE;
 }
