@@ -1,6 +1,6 @@
 #include "font.h"
 
-// Glyph design by user "Qimplef" on fontstruct.
+// Glyph design by user "Qimplef" on fontstruct, plus ÅÄÖ by sethsson.
 // https://fontstruct.com/fontstructions/show/521592/px_5x6_1
 
 const unsigned int  FONTCHAR_A = 0b011101000111111100011000110001,
@@ -24,6 +24,14 @@ const unsigned int  FONTCHAR_A = 0b011101000111111100011000110001,
                     FONTCHAR_S = 0b011111000001110000010000111110,
                     FONTCHAR_T = 0b111110010000100001000010000100,
                     FONTCHAR_U = 0b100011000110001100011000101110,
+                    FONTCHAR_V = 0b100011000110001010100101000100,
+                    FONTCHAR_W = 0b100011000110101101011010101010,
+                    FONTCHAR_X = 0b100010101000100010101000110001,
+                    FONTCHAR_Y = 0b100010101000100001000010000100,
+                    FONTCHAR_Z = 0b111110001000100010001000011111,
+                    FONTCHAR_Å = 0b001000000001110100011111110001,
+                    FONTCHAR_Ä = 0b100010000001110100011111110001,
+                    FONTCHAR_Ö = 0b100010000001110100011000101110,
                     FONTCHAR_NBSP = 0, 
                     FONTCHAR_1 = 0b001000110000100001000010001110;
 
@@ -69,6 +77,24 @@ unsigned int getCharData(char ch){
             return FONTCHAR_S;
         case 'T':
             return FONTCHAR_T;
+        case 'U':
+            return FONTCHAR_U;
+        case 'V':
+            return FONTCHAR_V;
+        case 'W':
+            return FONTCHAR_W;
+        case 'X':
+            return FONTCHAR_X;
+        case 'Y':
+            return FONTCHAR_Y;
+        case 'Z':
+            return FONTCHAR_Z;
+        case 'Å':
+            return FONTCHAR_Å;
+        case 'Ä':
+            return FONTCHAR_Ä;
+        case 'Ö':
+            return FONTCHAR_Ö;
         case ' ':
             return FONTCHAR_NBSP;
         case '1':
