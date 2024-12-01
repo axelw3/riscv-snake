@@ -89,12 +89,12 @@ unsigned int getCharData(char ch){
             return FONTCHAR_Y;
         case 'Z':
             return FONTCHAR_Z;
-        case 'Å':
-            return FONTCHAR_Å;
-        case 'Ä':
-            return FONTCHAR_Ä;
-        case 'Ö':
-            return FONTCHAR_Ö;
+        //case 'Å':
+        //    return FONTCHAR_Å;
+        //case 'Ä':
+        //    return FONTCHAR_Ä;
+        //case 'Ö':
+        //    return FONTCHAR_Ö;
         case ' ':
             return FONTCHAR_NBSP;
         case '1':
