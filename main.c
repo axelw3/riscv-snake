@@ -38,7 +38,7 @@ int get_sw(){
 }
 
 void showTitleScreen(){
-    drawText(10, 10, "ABCCA", 0xC);
+    drawText(10, 10, "SNAKE", 0xC);
     while(1){
         // do nothing
     }
