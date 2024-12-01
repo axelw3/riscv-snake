@@ -61,7 +61,8 @@ int main(){
 
     signed char sh[2],  // position of the snake's head
                 st[2],  // position of the snake's tail
-                snh[2]; // nästa position för snake-huvud (temporär användning)
+                snh[2], // nästa position för snake-huvud (temporär användning)
+                snt[2]; // nästa position för sista tail-biten (temporär användning)
 
     const unsigned short sz = MAP_W * MAP_H;
 
@@ -74,6 +75,7 @@ int main(){
     mSet(sh, SHEAD); // mark tile as head on map
 
     snh[0] = sh[0]; snh[1] = sh[1]; // initial ny huvudposition = aktuell huvudposition (ovan)
+    snt[0] = st[0]; snt[1] = st[1]; // initial ny tail-position = aktuell tail-position (ovan)
 
     short snakeLength = 1; // ej avgörande för spelbarhet, endast för visning av poäng
     set_displays(0, snakeLength / 10);
@@ -126,24 +128,26 @@ int main(){
         }else{
             // no collision, no apple
 
-            mSet(st, EMPTY); // ta bort gammal svans
-
             // flytta svansposition ett steg framåt (mot huvudet)
             switch(mGet(st)){
                 case SBONL:
-                    st[0]--;
+                    snt[0]--;
                     break;
                 case SBONU:
-                    st[1]--;
+                    snt[1]--;
                     break;
                 case SBONR:
-                    st[0]++;
+                    snt[0]++;
                     break;
                 case SBOND:
-                    st[1]++;
+                    snt[1]++;
                     break;
                 default:
             }
+
+            mSet(st, EMPTY); // ta bort gammal svans
+
+            st[0] = snt[0]; st[1] = snt[1]; // spara ny svansposition
         }
 
         // TODO: Rendera allt
