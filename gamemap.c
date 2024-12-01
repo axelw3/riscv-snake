@@ -1,12 +1,13 @@
 #include "gamemap.h"
 #include "vga.h"
 
-const signed char MAP_W = SCR_W / TILE_SIZE;
-const signed char MAP_H = SCR_H / TILE_SIZE;
+const unsigned char MAP_W = SCR_W / TILE_SIZE;
+const unsigned char MAP_H = SCR_H / TILE_SIZE;
+const unsigned short MAP_S = (SCR_W / TILE_SIZE) * (SCR_H / TILE_SIZE);
 
 unsigned char map[(SCR_W / TILE_SIZE) * (SCR_H / TILE_SIZE)];
 
-void mSet(signed char *i, enum TileData newState){
+void mSet(unsigned char *i, enum TileData newState){
     map[MAP_W * i[1] + i[0]] = (unsigned char) newState;
     
     switch(newState){

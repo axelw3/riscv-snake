@@ -28,10 +28,16 @@ void handle_interrupt(unsigned int cause){
     }
 }
 
-void randomPosition(signed char *position){
-    unsigned short t = getTimeLow();
-    position[0] = (t & 0xFF) % MAP_W;
-    position[1] = (t >> 2) % MAP_H;
+void randomPosition(unsigned char *position){
+    unsigned short left = MAP_S;
+    unsigned short pos = getTimeLow() % left;
+    while(left-- > 1){
+        if(mGetAt(pos) == EMPTY) break;
+        pos++;
+        pos %= MAP_S;
+    }
+    position[0] = pos % MAP_W;
+    position[1] = pos / MAP_W;
 }
 
 void showTitleScreen(){
@@ -58,11 +64,11 @@ void showGameOverScreen(short score){
 short startGame(){
     timerSetup();
 
-    signed char sh[2],  // position of the snake's head
-                st[2],  // position of the snake's tail
-                snh[2], // nästa position för snake-huvud (temporär användning)
-                snt[2], // nästa position för sista tail-biten (temporär användning)
-                ap[2]; // nuvarande äppel-position
+    unsigned char   sh[2],  // position of the snake's head
+                    st[2],  // position of the snake's tail
+                    snh[2], // nästa position för snake-huvud (temporär användning)
+                    snt[2], // nästa position för sista tail-biten (temporär användning)
+                    ap[2]; // nuvarande äppel-position
 
     for(unsigned short i = 0; i < MAP_W * MAP_H; i++){
         map[i] = EMPTY; // reset map
@@ -81,7 +87,7 @@ short startGame(){
 
     enum Direction move_direction = RIGHT;
 
-    signed char atNextPos;
+    enum TileData atNextPos;
 
     randomPosition(ap); // generera ny äppelposition
     mSet(ap, APPLE); // skapa äpple

@@ -28,7 +28,8 @@
 */
 #define APPLE_COLOR 0xC3
 
-extern const signed char MAP_W, MAP_H;
+extern const unsigned char MAP_W, MAP_H;
+extern const unsigned short MAP_S;
 
 extern unsigned char map[]; // 300 bytes
 
@@ -50,15 +51,24 @@ enum TileData{
  * @param i a two-element byte array containing the x/y position
  * @param newState new data value
 */
-void mSet(signed char *i, enum TileData newState);
+void mSet(unsigned char *i, enum TileData newState);
 
 /**
  * Get data for a game tile.
  * @param i a two-element byte array containing the x/y position
- * @return tile data for the specified position
+ * @return tile data for the specified tile
 */
-inline enum TileData mGet(signed char *i){
+inline enum TileData mGet(unsigned char *i){
     return (enum TileData) map[MAP_W * i[1] + i[0]];
+}
+
+/**
+ * Get data for a game tile.
+ * @param xy a one-dimensional coordinate `0 <= xy < MAP_S`
+ * @return tile data for the specified tile
+*/
+inline enum TileData mGetAt(unsigned short xy){
+    return (enum TileData) map[xy];
 }
 
 /**
