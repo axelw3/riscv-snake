@@ -31,11 +31,13 @@ void handle_interrupt(unsigned int cause){
 void randomPosition(unsigned char *position){
     unsigned short left = MAP_S;
     unsigned short pos = getTimeLow() % left;
+
     while(left-- > 1){
         if(mGetAt(pos) == EMPTY) break;
         pos++;
         pos %= MAP_S;
     }
+
     position[0] = pos % MAP_W;
     position[1] = pos / MAP_W;
 }

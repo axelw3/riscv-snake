@@ -24,5 +24,7 @@ void timerSetup(){
 }
 
 unsigned short getTimeLow(){
-    return *((volatile unsigned short*) 0x04000030);
+    volatile unsigned short *SNAPL = (volatile unsigned short*) 0x04000030;
+    *SNAPL = 1;
+    return *SNAPL;
 }
