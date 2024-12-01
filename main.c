@@ -100,9 +100,9 @@ void startGame(){
 
         atNextPos = mGet(snh);
 
-        if(atNextPos > 0 || snh[0] < 0 || snh[1] < 0 || snh[0] >= MAP_W || snh[1] >= MAP_H){
+        if((atNextPos != EMPTY && atNextPos != APPLE) || snh[0] < 0 || snh[1] < 0 || snh[0] >= MAP_W || snh[1] >= MAP_H){
             // collision with tail or with screen edge
-            // TODO: lose game
+            return; // lose game
         }
 
         mSet(snh, SHEAD); // add new head
