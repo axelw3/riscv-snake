@@ -9,7 +9,7 @@ enum Direction get_dpad_state() {
     unsigned char new_dpad_state = ~(*gpio_pointer & 0b1111);
     unsigned char new_heading = (new_dpad_state ^ DPAD_RAW_STATE) & new_dpad_state;
 
-    switch(new_heading){
+    switch((enum Direction) new_heading){
         case UP:
         case DOWN:
         case LEFT:
@@ -18,5 +18,5 @@ enum Direction get_dpad_state() {
             DPAD_RAW_STATE = new_heading;
     }
 
-    return (enum Direction) DPAD_RAW_STATE;
+    return (enum Direction) new_heading;
 }
