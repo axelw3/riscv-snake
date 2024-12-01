@@ -90,6 +90,11 @@ int main(){
     resetAllPixels();
     while(1){
         timer_start();
+
+        // debug
+        // TODO: ta bort denna rad
+        set_leds(*((volatile int*) 0x040000e0));
+
         move_direction = get_dpad_state();
         switch(move_direction){
         case RIGHT:
