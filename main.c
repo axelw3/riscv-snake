@@ -4,19 +4,14 @@
 #include "gpio_state.h"
 #include "dpad_state.h"
 #include "vga.h"
-#include "timer_clock.h"
+#include "timer.h"
 #include "gamemap.h"
 
-void set_leds(int led_state){
+/*void set_leds(int led_state){
     volatile int* led_pointer = (volatile int*) 0x04000000;
     (*led_pointer) = led_state & 0b1111111111;
-}
+}*/
 
-/*
-* Used to communicate with main() (or anytime the program should rest).
-* Take care to ensure that only one if statment waits for TIMER_TIMEOUT = 1,
-* as to maintain consistency in execution.
-*/
 volatile short TIMER_TIMEOUT = 0;
 int timeout_count = 0;
 
@@ -26,15 +21,11 @@ void handle_interrupt(unsigned int cause){
         // bekräfta IRQ genom att nollställa TO-biten (avsnitt 23.4.4 i dokumentationen)
         *((volatile unsigned short*) 0x04000020) &= (unsigned short int) !0b1; //0b1111111111111110; // reset
 
-        if(timeout_count++ % 10 == 0) {
+        timeout_count++;
+        if((timeout_count %= 10) == 0){
             TIMER_TIMEOUT = 1;
         }
     }
-}
-
-/* Get switch state. */
-int get_sw(){
-    return *((volatile int*) 0x04000010) & 0b1111111111;
 }
 
 void showTitleScreen(){
@@ -43,13 +34,22 @@ void showTitleScreen(){
     while((*((volatile char*) 0x040000d0) & 0b00000001) == 0);
 }
 
-void showGameOverScreen(){
+void showGameOverScreen(short score){
     drawText(10, 10, "GAME OVER", 0xC);
-    drawText(10, 24, "PRESS KEY1 TO CONTINUE", 0xFF);
+    drawText(10, 24, "SCORE: ", 0xC);
+    
+    char scoreStr[4] = "000";
+    for(int i = 2; i >= 0; i--){
+        scoreStr[i--] = (char) (0x30 + (score % 10));
+        score /= 10;
+    }
+
+    drawText(10 + 42, 24, scoreStr, 0xC);
+    drawText(10, 38, "PRESS KEY1 TO CONTINUE", 0xFF);
     while((*((volatile char*) 0x040000d0) & 0b00000001) == 0);
 }
 
-void startGame(){
+short startGame(){
     timerSetup();
 
     signed char sh[2],  // position of the snake's head
@@ -69,8 +69,6 @@ void startGame(){
     snt[0] = st[0]; snt[1] = st[1]; // initial ny tail-position = aktuell tail-position (ovan)
 
     short snakeLength = 1; // ej avgörande för spelbarhet, endast för visning av poäng
-    set_displays(0, snakeLength / 10);
-    set_displays(1, snakeLength % 10);
 
     enum Direction move_direction = RIGHT;
 
@@ -86,8 +84,7 @@ void startGame(){
         TIMER_TIMEOUT = 0;
 
         // debug
-        // TODO: ta bort denna rad
-        set_leds((int) move_direction);
+        //set_leds((int) move_direction);
 
         switch(move_direction){
         case RIGHT:
@@ -108,7 +105,7 @@ void startGame(){
 
         if((atNextPos != EMPTY && atNextPos != APPLE) || snh[0] < 0 || snh[1] < 0 || snh[0] >= MAP_W || snh[1] >= MAP_H){
             // collision with tail or with screen edge
-            return; // lose game
+            return snakeLength; // lose game
         }
 
         mSet(snh, SHEAD); // add new head
@@ -156,10 +153,10 @@ int main(){
         showTitleScreen();
 
         resetAllPixels();
-        startGame();
+        short score = startGame();
 
         resetAllPixels();
-        showGameOverScreen();
+        showGameOverScreen(score);
     }
 
     return 0;

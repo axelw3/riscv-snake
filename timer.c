@@ -1,4 +1,4 @@
-#include "timer_clock.h"
+#include "timer.h"
 #include "dtekv_lib.h"
 
 extern void enable_interrupt( void );
