@@ -25,7 +25,7 @@ void printHardwareCounters(){
 
     // Elapsed cycles
     asm volatile ("csrr &0, mcycle" : "=r"(temp_value));
-    print("\n mcycle: "); print_dec(tempvalue);
+    print("\n mcycle: "); print_dec(temp_value);
 
     // Instructions retired
     asm volatile ("csrr &0, minstret" : "=r"(temp_value));
@@ -33,31 +33,31 @@ void printHardwareCounters(){
 
     // Memory instruction retired
     asm volatile ("csrr &0, mhpmcounter3" : "=r"(temp_value));
-    print("\n mhpmc3: "); print_dec(tempvalue);
+    print("\n mhpmc3: "); print_dec(temp_value);
     
     // Instruction I-cache misses
     asm volatile ("csrr &0, mhpmcounter4" : "=r"(temp_value));
-    print("\n mhpmc4: "); print_dec(tempvalue);
+    print("\n mhpmc4: "); print_dec(temp_value);
     
     // Memory D-cache misses
     asm volatile ("csrr &0, mhpmcounter5" : "=r"(temp_value));
-    print("\n mhpmc5: "); print_dec(tempvalue);
+    print("\n mhpmc5: "); print_dec(temp_value);
     
     // Stalls due to I-cache misses
     asm volatile ("csrr &0, mhpmcounter6" : "=r"(temp_value));
-    print("\n mhpmc6: "); print_dec(tempvalue);
+    print("\n mhpmc6: "); print_dec(temp_value);
     
     // Stalls due to D-cache misses
     asm volatile ("csrr &0, mhpmcounter7" : "=r"(temp_value));
-    print("\n mhpmc7: "); print_dec(tempvalue);
+    print("\n mhpmc7: "); print_dec(temp_value);
     
     // Stalls due to hazards not forwarded
     asm volatile ("csrr &0, mhpmcounter8" : "=r"(temp_value));
-    print("\n mhpmc8: "); print_dec(tempvalue);
+    print("\n mhpmc8: "); print_dec(temp_value);
     
     // Stalls due to expensive ALU ops
     asm volatile ("csrr &0, mhpmcounter9" : "=r"(temp_value));
-    print("\n mhpmc9: "); print_dec(tempvalue);
+    print("\n mhpmc9: "); print_dec(temp_value);
 }
 #endif
 
