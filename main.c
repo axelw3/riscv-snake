@@ -117,7 +117,7 @@ void showGameOverScreen(short score){
     
     char scoreStr[4] = "000";
     for(int i = 2; i >= 0; i--){
-        scoreStr[i--] = (char) (0x30 + (score % 10));
+        scoreStr[i] = (char) (0x30 + (score % 10));
         score /= 10;
     }
 
@@ -153,7 +153,8 @@ signed short startGame(){
     short snakeLength = 1; // ej avgörande för spelbarhet, endast för visning av poäng
     displayScore(snakeLength);
 
-    enum Direction move_direction = RIGHT;
+    enum Direction  move_direction = RIGHT,
+                    next_direction = RIGHT;
 
     // state of the tile we are attempting to move into
     enum TileData atNextPos;
@@ -165,11 +166,22 @@ signed short startGame(){
         // wait for timeout
         while(!TIMER_TIMEOUT){
             // poll user inputs while waiting
-            move_direction = updateDirection();
+            next_direction = updateDirection();
 #ifdef DEBUG
             set_leds((int) 0b1111 & (~(*((volatile int*) 0x040000e0))));
 #endif
         }
+
+        if(next_direction != move_direction && snakeLength > 1){
+            switch(next_direction + move_direction){
+                case 12:
+                case 3:
+                    // not allowed to reverse direction when snakeLength > 1
+                    next_direction = move_direction;
+            }
+        }
+
+        move_direction = next_direction;
 
         // reset timeout state
         TIMER_TIMEOUT = 0;

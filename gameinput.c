@@ -9,10 +9,10 @@ enum Direction updateDirection() {
     unsigned char new_heading = (new_dpad_state ^ DPAD_RAW_STATE) & new_dpad_state;
 
     switch(new_heading){
-        case 0b1000:
-        case 0b100:
-        case 0b10:
-        case 0b1:
+        case UP:
+        case DOWN:
+        case LEFT:
+        case RIGHT:
             // update state if new heading is ok
             DPAD_RAW_STATE = new_heading;
     }
