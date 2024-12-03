@@ -27,6 +27,10 @@ void mSet(unsigned char *i, enum TileData newState){
     }
 }
 
+extern inline enum TileData mGet(unsigned char *i);
+
+extern inline enum TileData mGetAt(unsigned short xy);
+
 enum TileData mTrDir(enum Direction dir){
     switch(dir){
         case LEFT:

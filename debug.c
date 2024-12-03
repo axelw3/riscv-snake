@@ -62,14 +62,14 @@ void printHardwareCounters(){
 }
 
 void resetHardwareCounters(){
-    asm volatile ("csrw mcycle, x0");
-    asm volatile ("csrw minstret, x0");
-    asm volatile ("csrw mhpmcounter3, x0");
-    asm volatile ("csrw mhpmcounter4, x0");
-    asm volatile ("csrw mhpmcounter5, x0");
-    asm volatile ("csrw mhpmcounter6, x0");
-    asm volatile ("csrw mhpmcounter7, x0");
-    asm volatile ("csrw mhpmcounter8, x0");
-    asm volatile ("csrw mhpmcounter9, x0");
+    asm ("csrw mcycle, x0");
+    asm ("csrw minstret, x0");
+    asm ("csrw mhpmcounter3, x0");
+    asm ("csrw mhpmcounter4, x0");
+    asm ("csrw mhpmcounter5, x0");
+    asm ("csrw mhpmcounter6, x0");
+    asm ("csrw mhpmcounter7, x0");
+    asm ("csrw mhpmcounter8, x0");
+    asm ("csrw mhpmcounter9, x0");
 }
 #endif

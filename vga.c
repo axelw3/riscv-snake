@@ -7,6 +7,8 @@
 */
 volatile char *VGA = (volatile char*) 0x08000000;
 
+extern inline void setPixel(unsigned int x, unsigned int y, unsigned char color);
+
 void fillSquare(unsigned int x0, unsigned int y0, unsigned int s, unsigned char color){
     for(int x = 0; x < s; x++){
         for(int y = 0; y < s; y++){
