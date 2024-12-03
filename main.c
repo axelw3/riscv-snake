@@ -14,6 +14,51 @@ void set_leds(int led_state){
     volatile int* led_pointer = (volatile int*) 0x04000000;
     (*led_pointer) = led_state & 0b1111111111;
 }
+
+// All counters has high register, storing remaining 32 MSb (not used). 
+// OBS! mcycle will overflow after ~2min.
+// Documentation used:  DTEK-V Hardware Counter Introduction (Literature and Resources).
+//                      DTEK-V Processor Overview Sheet (Literature and Resources).
+// Registers are readable/writable.
+void printHardwareCounters(){
+    unsigned int temp_value;
+
+    // Elapsed cycles
+    asm volatile ("csrr &0, mcycle" : "=r"(temp_value));
+    print("\n mcycle: "); print_dec(tempvalue);
+
+    // Instructions retired
+    asm volatile ("csrr &0, minstret" : "=r"(temp_value));
+    print("\n minstr: "); print_dec(temp_value);
+
+    // Memory instruction retired
+    asm volatile ("csrr &0, mhpmcounter3" : "=r"(temp_value));
+    print("\n mhpmc3: "); print_dec(tempvalue);
+    
+    // Instruction I-cache misses
+    asm volatile ("csrr &0, mhpmcounter4" : "=r"(temp_value));
+    print("\n mhpmc4: "); print_dec(tempvalue);
+    
+    // Memory D-cache misses
+    asm volatile ("csrr &0, mhpmcounter5" : "=r"(temp_value));
+    print("\n mhpmc5: "); print_dec(tempvalue);
+    
+    // Stalls due to I-cache misses
+    asm volatile ("csrr &0, mhpmcounter6" : "=r"(temp_value));
+    print("\n mhpmc6: "); print_dec(tempvalue);
+    
+    // Stalls due to D-cache misses
+    asm volatile ("csrr &0, mhpmcounter7" : "=r"(temp_value));
+    print("\n mhpmc7: "); print_dec(tempvalue);
+    
+    // Stalls due to hazards not forwarded
+    asm volatile ("csrr &0, mhpmcounter8" : "=r"(temp_value));
+    print("\n mhpmc8: "); print_dec(tempvalue);
+    
+    // Stalls due to expensive ALU ops
+    asm volatile ("csrr &0, mhpmcounter9" : "=r"(temp_value));
+    print("\n mhpmc9: "); print_dec(tempvalue);
+}
 #endif
 
 /**
