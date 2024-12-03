@@ -10,8 +10,9 @@ CFLAGS ?= -Wall -nostdlib -O3 -mabi=ilp32 -march=rv32imzicsr -fno-builtin
 
 build: clean main.bin
 
-debug: CFLAGS += -DDEBUG
-debug: build
+wdebug: CFLAGS += -DDEBUG
+wdebug: clean
+wdebug: main.bin
 
 main.elf: 
 	$(TOOLCHAIN)gcc -c $(CFLAGS) $(SOURCES)
