@@ -172,6 +172,9 @@ signed short startGame(){
 #endif
         }
 
+        // reset timeout state
+        TIMER_TIMEOUT = 0;
+
         if(next_direction != move_direction && snakeLength > 1){
             switch(next_direction + move_direction){
                 case 12:
@@ -182,9 +185,6 @@ signed short startGame(){
         }
 
         move_direction = next_direction;
-
-        // reset timeout state
-        TIMER_TIMEOUT = 0;
 
         // calculate new head position
         switch(move_direction){
