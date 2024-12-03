@@ -7,20 +7,9 @@
 */
 volatile char *VGA = (volatile char*) 0x08000000;
 
-/**
- * DMA controller register.
-*/
-volatile char *VGA_CTRL = (volatile char*) 0x04000100;
-
-void swap(){
-    *(VGA_CTRL + 1) = (int) VGA; // set address of rgb data
-    *VGA_CTRL = 0; // swap
-    return;
-}
-
-void fillSquare(unsigned int x0, unsigned int y0, unsigned int w, unsigned int h, unsigned char color){
-    for(int x = 0; x < w; x++){
-        for(int y = 0; y < h; y++){
+void fillSquare(unsigned int x0, unsigned int y0, unsigned int s, unsigned char color){
+    for(int x = 0; x < s; x++){
+        for(int y = 0; y < s; y++){
             setPixel(x0 + x, y0 + y, color);
         }
     }
@@ -43,13 +32,13 @@ void drawText(unsigned int x0, unsigned int y0, char* text, unsigned char color)
     }
 }
 
-void drawChar(unsigned int x0, unsigned int y0, unsigned int char_data, unsigned char color){
+void drawChar(unsigned int x0, unsigned int y0, unsigned int glyph_data, unsigned char color){
     int pos = FCHAR_W * FCHAR_H;
     do{
         pos--;
 
-        if(char_data & 0b1){
+        if(glyph_data & 0b1){
             setPixel(x0 + (pos % FCHAR_W), y0 + (pos / FCHAR_W), color);
         }
-    }while(char_data >>= 1);
+    }while(glyph_data >>= 1);
 }

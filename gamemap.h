@@ -4,7 +4,7 @@
 #include "vga.h"
 #include "dpad_state.h" // enums cannot be forward-declared
 
-#if(SCR_W % 16 != 0)
+#if(SCR_W % 16 != 0 || SCR_H % 16 != 0)
 #error
 #endif
 
@@ -28,13 +28,28 @@
 */
 #define APPLE_COLOR 0xC3
 
-extern const unsigned char MAP_W, MAP_H;
+/**
+ * Number of map tiles on the x-axis.
+*/
+extern const unsigned char MAP_W;
+
+/**
+ * Number of map tiles on the y-axis.
+*/
+extern const unsigned char MAP_H;
+
+/**
+ * Total number of map tiles.
+*/
 extern const unsigned short MAP_S;
 
+/**
+ * Map of the current game state.
+*/
 extern unsigned char map[]; // 300 bytes
 
 /**
- * Mutually exclusive tile states/data.
+ * Possible tile states.
 */
 enum TileData{
     EMPTY = 0,  // tom yta

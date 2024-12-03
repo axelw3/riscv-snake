@@ -2,13 +2,20 @@
 #define VGA_H
 
 /**
- * Width, in pixels.
+ * Screen width, in pixels.
 */
 #define SCR_W 320
+
+/**
+ * Screen height, in pixels.
+*/
 #define SCR_H 240
 
 /**
- * Set the color of a pixel in the backbuffer.
+ * Set the color of a pixel on the screen (frontbuffer).
+ * @param x pixel x coordinate
+ * @param y pixel y coordinate
+ * @param color color to be used
 */
 inline void setPixel(unsigned int x, unsigned int y, unsigned char color){
     *((volatile char*) 0x08000000 + y * SCR_W + x) = color;
@@ -16,23 +23,35 @@ inline void setPixel(unsigned int x, unsigned int y, unsigned char color){
 }
 
 /**
- * Perform framebuffer swap.
+ * Draw a filled square to the screen.
+ * @param x0 leftmost pixel x coordinate
+ * @param y0 top pixel y coordinate
+ * @param s side length, in pixels
+ * @param color fill color
 */
-void swap();
-
-/**
- * Draw a filled square to the backbuffer.
-*/
-void fillSquare(unsigned int x0, unsigned int y0, unsigned int w, 
-                unsigned int h, unsigned char color);
+void fillSquare(unsigned int x0, unsigned int y0, unsigned int s, unsigned char color);
 
 /**
  * Reset pixel buffer
 */
 void resetAllPixels();
 
+/**
+ * Render a text string on the screen.
+ * @param x0 leftmost pixel x coordinate
+ * @param y0 top pixel y coordinate
+ * @param text a null-terminated char array (a C string)
+ * @param color text fill color
+*/
 void drawText(unsigned int x0, unsigned int y0, char* text, unsigned char color);
 
-void drawChar(unsigned int x0, unsigned int y0, unsigned int char_data, unsigned char color);
+/**
+ * Draw a single character to the screen.
+ * @param x0 leftmost pixel x coordinate
+ * @param y0 top pixel y coordinate
+ * @param glyph_data glyph data
+ * @param color text fill color
+*/
+void drawChar(unsigned int x0, unsigned int y0, unsigned int glyph_data, unsigned char color);
 
 #endif

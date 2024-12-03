@@ -1,21 +1,33 @@
-// Other files
 #include "dtekv_lib.h"
 #include "seven_seg.h"
-#include "gpio_state.h"
+#include "gameinput.h"
 #include "dpad_state.h"
 #include "vga.h"
 #include "timer.h"
 #include "gamemap.h"
 
-/*void set_leds(int led_state){
+#define ERROR_INVALID_GAME_STATE 0
+#define ERROR_NO_EMPTY_TILE 1
+
+#ifdef DEBUG
+void set_leds(int led_state){
     volatile int* led_pointer = (volatile int*) 0x04000000;
     (*led_pointer) = led_state & 0b1111111111;
-}*/
+}
+#endif
 
-volatile short TIMER_TIMEOUT = 0;
+/**
+ * Whether or not a timeout has occured.
+*/
+volatile unsigned char TIMER_TIMEOUT = 0;
+
+/**
+ * Number of interrupts. Enables the use of long timer periods by waiting for multiple
+ * interrupts before setting `TIMER_TIMEOUT = 1`.
+*/
 int timeout_count = 0;
 
-/* Called from assembly code. */
+/* Handle interrupts. Called from assembly code. */
 void handle_interrupt(unsigned int cause){
     if(cause == 16){
         // bekräfta IRQ genom att nollställa TO-biten (avsnitt 23.4.4 i dokumentationen)
@@ -28,20 +40,35 @@ void handle_interrupt(unsigned int cause){
     }
 }
 
-void randomPosition(unsigned char *position){
+/**
+ * Set the given coordinates to a pseudo-random position, based on the current timer value.
+ * If the corresponding tile is non-EMPTY, the position will be set to the next available
+ * (empty) tile, moving left-right and up-down.
+ * 
+ * @param position a two-element array where the generated coordinates will be stored
+ * @return `0` if a position was found
+*/
+unsigned char randomPosition(unsigned char *position){
     unsigned short left = MAP_S;
     unsigned short pos = getTimeLow() % left;
 
-    while(left-- > 1){
-        if(mGetAt(pos) == EMPTY) break;
+    while(left-- > 0){
+        if(mGetAt(pos) == EMPTY){
+            position[0] = pos % MAP_W;
+            position[1] = pos / MAP_W;
+            return 0;
+        }
         pos++;
         pos %= MAP_S;
     }
 
-    position[0] = pos % MAP_W;
-    position[1] = pos / MAP_W;
+    return 1;
 }
 
+/**
+ * Display the current score on the seven-segment displays.
+ * @param score score to be displayed
+*/
 void displayScore(short score){
     set_displays(5, -1);
     set_displays(4, -1);
@@ -57,12 +84,33 @@ void displayScore(short score){
     }
 }
 
+/**
+ * Show title screen and wait for user input.
+*/
 void showTitleScreen(){
     drawText(10, 10, "SNAKE", 0xC);
     drawText(10, 24, "PRESS KEY1 TO START", 0xFF);
     while((*((volatile char*) 0x040000d0) & 0b00000001) == 0);
 }
 
+/**
+ * Show error screen.
+*/
+void showErrorScreen(const signed short code){
+    drawText(10, 10, "AN ERROR OCCURED:", 0xC);
+    switch(code){
+        case ERROR_INVALID_GAME_STATE:
+            drawText(10, 24, "INVALID GAME STATE", 0xFF);
+            break;
+        case ERROR_NO_EMPTY_TILE:
+            drawText(10, 24, "NO EMPTY TILE", 0xFF);
+            break;
+    }
+}
+
+/**
+ * Show the "game over" screen and wait for used input.
+*/
 void showGameOverScreen(short score){
     drawText(10, 10, "GAME OVER", 0xC);
     drawText(10, 24, "SCORE: ", 0xC);
@@ -78,7 +126,11 @@ void showGameOverScreen(short score){
     while((*((volatile char*) 0x040000d0) & 0b00000001) == 0);
 }
 
-short startGame(){
+/**
+ * Run the game.
+ * @return score achieved by the player
+*/
+signed short startGame(){
     unsigned char   sh[2],  // position of the snake's head
                     st[2],  // position of the snake's tail
                     snh[2], // nästa position för snake-huvud (temporär användning)
@@ -103,21 +155,26 @@ short startGame(){
 
     enum Direction move_direction = RIGHT;
 
+    // state of the tile we are attempting to move into
     enum TileData atNextPos;
 
     randomPosition(ap); // generera ny äppelposition
     mSet(ap, APPLE); // skapa äpple
 
     while(1){
-        while(TIMER_TIMEOUT == 0){
-            move_direction = get_dpad_state();
+        // wait for timeout
+        while(!TIMER_TIMEOUT){
+            // poll user inputs while waiting
+            move_direction = updateDirection();
+#ifdef DEBUG
+            set_leds((int) 0b1111 & (~(*((volatile int*) 0x040000e0))));
+#endif
         }
 
+        // reset timeout state
         TIMER_TIMEOUT = 0;
 
-        // debug
-        //set_leds((int) move_direction);
-
+        // calculate new head position
         switch(move_direction){
         case RIGHT:
             snh[0]++;
@@ -133,10 +190,15 @@ short startGame(){
             break;
         }
 
-        atNextPos = mGet(snh);
+        // check for collision with screen edge
+        if(snh[0] < 0 || snh[1] < 0 || snh[0] >= MAP_W || snh[1] >= MAP_H){
+            return snakeLength; // lose game
+        }
 
-        if((atNextPos != EMPTY && atNextPos != APPLE) || snh[0] < 0 || snh[1] < 0 || snh[0] >= MAP_W || snh[1] >= MAP_H){
-            // collision with tail or with screen edge
+        atNextPos = mGet(snh); // check what is at the target position
+
+        // check for collision with body
+        if(atNextPos != EMPTY && atNextPos != APPLE){
             return snakeLength; // lose game
         }
 
@@ -150,8 +212,12 @@ short startGame(){
             snakeLength++;
             displayScore(snakeLength);
 
-            randomPosition(ap); // generera äppelposition
-            mSet(ap, APPLE); // skapa äpple
+            if(randomPosition(ap) != 0){ // generera ny äppelposition
+                // ingen ledig tile kunde hittas - spelet vunnit
+                return ERROR_NO_EMPTY_TILE;
+            }
+
+            mSet(ap, APPLE); // skapa nytt äpple
         }else{
             // no collision, no apple
 
@@ -170,6 +236,8 @@ short startGame(){
                     snt[1]++;
                     break;
                 default:
+                    // error (invalid game state)
+                    return ERROR_INVALID_GAME_STATE;
             }
 
             mSet(st, EMPTY); // ta bort gammal svans
@@ -193,9 +261,14 @@ int main(){
         showTitleScreen();
 
         resetAllPixels();
-        short score = startGame();
+        signed short score = startGame();
 
         resetAllPixels();
+        if(score < 0){
+            showErrorScreen(score);
+            break;
+        }
+
         showGameOverScreen(score);
     }
 
