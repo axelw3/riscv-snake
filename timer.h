@@ -1,7 +1,7 @@
 #ifndef TIMER_CLOCK_H
 #define TIMER_CLOCK_H
 
-// Use a timer period of 500 ms
+// Use a timer period of 400 ms
 #define TIMER_PERIOD 400
 
 void timerSetup();
