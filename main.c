@@ -176,10 +176,6 @@ signed short startGame(){
         // reset timeout state
         TIMER_TIMEOUT = 0;
 
-#ifdef DEBUG
-        resetHardwareCounters();
-#endif
-
         if(next_direction != move_direction && snakeLength > 1){
             switch(next_direction + move_direction){
                 case 12:
@@ -261,10 +257,6 @@ signed short startGame(){
 
             st[0] = snt[0]; st[1] = snt[1]; // spara ny svansposition
         }
-
-#ifdef DEBUG
-        printHardwareCounters();
-#endif
     }
 }
 
@@ -281,8 +273,14 @@ int main(){
         resetAllPixels();
         showTitleScreen();
 
+#ifdef DEBUG
+        resetHardwareCounters();
+#endif
         resetAllPixels();
         signed short score = startGame();
+#ifdef DEBUG
+        printHardwareCounters();
+#endif
 
         resetAllPixels();
         if(score < 0){
