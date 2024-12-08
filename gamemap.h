@@ -50,6 +50,8 @@ extern unsigned char map[]; // 300 bytes
 
 /**
  * Possible tile states.
+ * 
+ * @author sethsson
 */
 enum TileData{
     EMPTY = 0,  // tom yta
@@ -65,6 +67,8 @@ enum TileData{
  * Set data for the specified game tile.
  * @param i a two-element byte array containing the x/y position
  * @param newState new data value
+ * 
+ * @author sethsson
 */
 void mSet(unsigned char *i, enum TileData newState);
 
@@ -72,6 +76,8 @@ void mSet(unsigned char *i, enum TileData newState);
  * Get data for a game tile.
  * @param i a two-element byte array containing the x/y position
  * @return tile data for the specified tile
+ * 
+ * @author sethsson
 */
 inline enum TileData mGet(unsigned char *i){
     return (enum TileData) map[MAP_W * i[1] + i[0]];
@@ -81,6 +87,8 @@ inline enum TileData mGet(unsigned char *i){
  * Get data for a game tile.
  * @param xy a one-dimensional coordinate `0 <= xy < MAP_S`
  * @return tile data for the specified tile
+ * 
+ * @author sethsson
 */
 inline enum TileData mGetAt(unsigned short xy){
     return (enum TileData) map[xy];
@@ -89,6 +97,8 @@ inline enum TileData mGetAt(unsigned short xy){
 /**
  * Translate a `Direction` direction to the corresponding directed snake tail component.
  * @param dir a `Direction`, i.e. either `LEFT`, `RIGHT`, `DOWN` or `UP`
+ * 
+ * @author sethsson
 */
 enum TileData mTrDir(enum Direction dir);
 

@@ -3,6 +3,7 @@
 
 /**
  * Possible dpad states: up, down, left and right.
+ * @author sethsson
 */
 enum Direction{
     UP = 0b1000,

@@ -15,6 +15,8 @@
  * Get raw character pixel data.
  * @param ch character to fetch
  * @return raw pixel data
+ * 
+ * @author sethsson
 */
 unsigned int getCharData(char ch);
 

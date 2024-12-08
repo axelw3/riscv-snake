@@ -3,9 +3,14 @@
 
 /**
  * Display a number on the 7 segment display.
+ * 
+ * @author owiren
 */
 void set_displays(int display_number, int value);
 
+/**
+ * @author owiren
+*/
 void resetAllPixels();
 
 #endif

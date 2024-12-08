@@ -30,6 +30,8 @@ int timeout_count = 0;
 
 /**
  * Handle interrupts. Called from assembly code.
+ * 
+ * @author owiren
 */
 void handle_interrupt(unsigned int cause){
     if(cause == 16){
@@ -50,6 +52,8 @@ void handle_interrupt(unsigned int cause){
  * 
  * @param position a two-element array where the generated coordinates will be stored
  * @return `0` if a position was found
+ * 
+ * @author sethsson
 */
 unsigned char randomPosition(unsigned char *position){
     unsigned short left = MAP_S;
@@ -71,6 +75,8 @@ unsigned char randomPosition(unsigned char *position){
 /**
  * Display the current score on the seven-segment displays.
  * @param score score to be displayed
+ * 
+ * @author owiren
 */
 void displayScore(short score){
     set_displays(5, -1);
@@ -89,6 +95,8 @@ void displayScore(short score){
 
 /**
  * Show title screen and wait for user input.
+ * 
+ * @author sethsson
 */
 void showTitleScreen(){
     drawText(10, 10, "SNAKE", 0xC);
@@ -98,6 +106,8 @@ void showTitleScreen(){
 
 /**
  * Show error screen.
+ * 
+ * @author sethsson
 */
 void showErrorScreen(const signed short code){
     drawText(10, 10, "AN ERROR OCCURED:", 0xC);
@@ -113,6 +123,8 @@ void showErrorScreen(const signed short code){
 
 /**
  * Show the "game over" screen and wait for used input.
+ * 
+ * @author sethsson
 */
 void showGameOverScreen(short score){
     drawText(10, 10, "GAME OVER", 0xC);
@@ -132,6 +144,8 @@ void showGameOverScreen(short score){
 /**
  * Run the game.
  * @return score achieved by the player
+ * 
+ * @author sethsson & owiren
 */
 signed short startGame(){
     unsigned char   sh[2],  // position of the snake's head
@@ -262,6 +276,9 @@ signed short startGame(){
     }
 }
 
+/**
+ * @author sethsson
+*/
 int main(){
     // Clock is started here, since we use the timer value for pseudo-
     // RNG, and this guarantees some kind of randomness (based on time

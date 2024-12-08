@@ -5,6 +5,7 @@
 
 /**
  * Get current button input and select direction of next move.
+ * @author owiren
 */
 enum Direction updateDirection();
 
