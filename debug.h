@@ -2,8 +2,14 @@
 #define DEBUG_H
 
 #ifdef DEBUG
-//void printHex64(unsigned int l32, unsigned int h32);
+/**
+ * Read and print hardware counter values.
+*/
 void printHardwareCounters();
+
+/**
+ * Reset hardware counters.
+*/
 void resetHardwareCounters();
 #endif
 
