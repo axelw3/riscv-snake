@@ -1,5 +1,4 @@
 #include "gameinput.h"
-#include "dpad_state.h"
 
 unsigned char DPAD_RAW_STATE = 0b0001;
 volatile int* gpio_pointer = (volatile int*) 0x040000e0;
