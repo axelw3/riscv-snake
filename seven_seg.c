@@ -1,6 +1,5 @@
 #include "seven_seg.h"
 
-/* Display a number on the 7 segment display */
 void set_displays(int display_number, int value){
     volatile char* seg7display = (volatile char*) (0x04000050 + 0x10 * display_number);
     switch(value){

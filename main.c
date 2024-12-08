@@ -28,7 +28,9 @@ volatile unsigned char TIMER_TIMEOUT = 0;
 */
 int timeout_count = 0;
 
-/* Handle interrupts. Called from assembly code. */
+/**
+ * Handle interrupts. Called from assembly code.
+*/
 void handle_interrupt(unsigned int cause){
     if(cause == 16){
         // bekräfta IRQ genom att nollställa TO-biten (avsnitt 23.4.4 i dokumentationen)
