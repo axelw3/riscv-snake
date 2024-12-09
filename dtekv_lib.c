@@ -53,23 +53,29 @@ void print_hex32(unsigned int x){
 
 /* This code handles an exception. */
 void handle_exception(unsigned arg0, unsigned arg1, unsigned arg2, unsigned arg3, unsigned arg4, unsigned arg5, unsigned mcause, unsigned syscall_num){
-#ifdef DEBUG
     switch (mcause){
+#ifdef DEBUG
         case 0:
             print("\n[EXCEPTION] Instruction address misalignment. ");
             break;
         case 2:
             print("\n[EXCEPTION] Illegal instruction. ");
             break;
+#endif
         case 11:
+#ifdef DEBUG
             if (syscall_num == 4) print((char*) arg0);
             if (syscall_num == 11) printc(arg0);
+#endif
             return;
         default:
+#ifdef DEBUG
             print("\n[EXCEPTION] Unknown error. ");
+#endif
             break;
     }
 
+#ifdef DEBUG
     print("Exception Address: ");
     print_hex32(arg0); printc('\n');
 #endif
