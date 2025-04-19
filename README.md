@@ -1,4 +1,7 @@
 # Snake
+
+[![hqdefault](https://github.com/user-attachments/assets/a6206b47-23e2-4d08-9d09-f40df7e2a932)](https://www.youtube.com/watch?v=umetqKHsiI8)
+
 An implementation of the classic Snake computer game in the C programming language. The project was written for the DTEK-V (DE10-Lite-based) board used in the IS1500 course at KTH. As inputs, the game digitally reads GPIO pins 0 through 3. Additionally, the button labelled `KEY1` is used for starting the game. The game is rendered to the on-board VGA controller.
 
 Made by [axelw3](https://github.com/axelw3/) and Oskar W.
